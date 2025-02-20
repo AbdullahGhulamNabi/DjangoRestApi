@@ -16,12 +16,12 @@ class BlogPostListCreate(APIView):
         # print(title, content)
 
         if BlogPost.objects.filter(title=blog_title).exists():
-            return Response({'error: blog with same title already exists'}, status= status.HTTP_400_BAD_REQUEST)
+            return Response({'error': 'Blog with same title already exists'}, status=status.HTTP_400_BAD_REQUEST)
         
 
         blog = BlogPost.objects.create(title=blog_title, content=blog_content)
         serialized_data = BlogPostSerializer(blog)
 
-        return Response(serialized_data,status=status.HTTP_200_OK)
+        return Response(serialized_data.data,status=status.HTTP_200_OK)
 
 
