@@ -7,11 +7,21 @@ from rest_framework import status
 
 class BlogPostListCreate(APIView):
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
 
-        # queryset = BlogPost.objects.all()
+        blog_data = request.data
 
-        # serialzer_class = BlogPostSerializer()
-        return Response("Post api working ", status=status.HTTP_200_OK)
+        blog_title = blog_data['title']
+        blog_content = blog_data['content']
+        # print(title, content)
+
+        if BlogPost.objects.filter(title=blog_title).exists():
+            return Response({'error: blog with same title already exists'}, status= status.HTTP_400_BAD_REQUEST)
+        
+
+        blog = BlogPost.objects.create(title=blog_title, content=blog_content)
+        serialized_data = BlogPostSerializer(blog)
+
+        return Response(serialized_data,status=status.HTTP_200_OK)
 
 
