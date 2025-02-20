@@ -7,3 +7,4 @@ class BlogPostSerializer(serializers.ModelSerializer):
         fields = ['id','title','content','published_date']
 
 
+
