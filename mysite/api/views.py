@@ -23,5 +23,22 @@ class BlogPostListCreate(APIView):
         serialized_data = BlogPostSerializer(blog)
 
         return Response(serialized_data.data,status=status.HTTP_200_OK)
+    
+    def get(self, request):
+
+        blog_title = request.query_params.get('title')
+
+        try:
+            queryset = BlogPost.objects.get(title = blog_title)
+
+        except BlogPost.DoesNotExist:
+            return Response({'error':'Blog post not found'}, status=status.HTTP_400_BAD_REQUEST)
+
+        print(queryset)
+
+        serialized_data = BlogPostSerializer(queryset)
+        return Response(serialized_data.data, status=status.HTTP_200_OK)
+    
+
 
 
